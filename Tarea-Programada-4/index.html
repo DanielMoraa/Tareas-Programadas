@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="stylesheet" href="css/pico.min.css" />
+    <script src="js/jquery.min.js"></script>
+    <title>Tarea Programada 4</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Tarea Programada 4</h1>
+      <div class="grid">
+        <article>
+          <header><b>Seleccionador</b></header>
+          <fieldset>
+            <label>
+              <input id="pares" type="checkbox" role="switch" checked />
+              Pares
+            </label>
+            <label>
+              <input id="impares" type="checkbox" role="switch" checked />
+              Impares
+            </label>
+            <label>
+              <input id="primos" type="checkbox" role="switch" checked />
+              Primos
+            </label>
+          </fieldset>
+        </article>
+        <article>
+          <header><b>Números</b></header>
+          <ul id="numeros"></ul>
+        </article>
+      </div>
+    </main>
+    <style>
+      .oculto {
+        display: none;
+      }
+    </style>
+    <script defer>
+      $(document).ready(() => {
+        // Inicio # 1
+        const $numeros = $("#numeros"); 
+        
+        const limite = 100;
+        const esPrimo = new Array(limite + 1).fill(true);
+        esPrimo[0] = esPrimo[1] = false;
+
+        for (let i = 2; i <= Math.sqrt(limite); i++) {
+          if (esPrimo[i]) {
+            for (let j = i * i; j <= limite; j += i) {
+              esPrimo[j] = false;
+            }
+          }
+        }
+
+        for (let num = 1; num <= limite; num++) {
+          const $li = $("<li>")
+            .attr("id", num)
+            .text(num)
+            .addClass(num % 2 === 0 ? "par" : "impar");
+
+          if (esPrimo[num]) {
+            $li.addClass("primo");
+          }
+
+          $numeros.append($li);
+         }
+
+        $("#pares").on("click", function(ev) {
+          const $paresLista = $(".par");
+          const func = ev.target.checked ? "removeClass" : "addClass";
+          $paresLista[func]("oculto");
+        });
+        // Final # 1
+
+        // Inicio # 2
+        $("#impares").on("click", function(ev) {
+          const $imparesLista = $(".impar");
+          const func = ev.target.checked ? "removeClass" : "addClass";
+          $imparesLista[func]("oculto");
+        });
+        // Final # 2
+
+        // Inicio # 3
+        $("#primos").on("click", function(ev) {
+          const $primosLista = $(".primo");
+          const func = ev.target.checked ? "removeClass" : "addClass";
+          $primosLista[func]("oculto");
+        });
+        // Final # 3
+      });
+    </script>
+  </body>
+</html>
